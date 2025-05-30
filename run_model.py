@@ -60,14 +60,16 @@ def main():
     # plot the ROC curve to visualize model discrimination
     plt.figure(figsize=(6,4))
     plt.plot(fpr, tpr, label=f"LogReg (AUC = {roc_auc:.3f})")
-    # plot a diagonal line representing random guessing
     plt.plot([0,1], [0,1], "--", label="Random")
     plt.xlabel("False Positive Rate")
     plt.ylabel("True Positive Rate")
     plt.title("ROC Curve")
     plt.legend()
     plt.tight_layout()
-    plt.show()
+
+    # save instead of showing
+    os.makedirs("reports/figures", exist_ok=True)
+    plt.savefig("reports/figures/roc_curve_model_eval.png")
 
     # train an XGBoost classifier for comparison
     from xgboost import XGBClassifier
@@ -78,7 +80,4 @@ def main():
     y_proba2 = xgb.predict_proba(X_test)[:, 1]
     fpr2, tpr2, _ = roc_curve(y_test, y_proba2)
     # print the AUC for the XGBoost model
-    print(f"XGBoost AUC: {auc(fpr2, tpr2):.3f}")
-
-if __name__ == "__main__":
-    main()
+    print(f"XGBoos
